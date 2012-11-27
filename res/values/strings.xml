@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">Send new number</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+
+    <!-- Menu -->
+    <string name="menu_about">About</string>
+
+    <!-- Main -->
+    <string name="contact_list">Empty List</string>
+    <string name="next_button_title">Next</string>
+
+    <!-- Send -->
+    <string name="title_activity_send">Send</string>
+    <string name="content_edit_message">Hello, \nmy new number is +49 12345678 \nname</string>
+    <string name="send_button_title">Send</string>
+    <string name="finish_button_title">Done</string>
+    
+    <!-- About -->
+    <string name="title_activity_about">About</string>
+    <string name="credits_code">Robin Morawetz (Code) \nhttps://github.com/Rdlgrmpf" \n\nhttp://forum.xda-developers.com/member.php?u=3626662</string>
+    <string name="credits_graphics">Daniel Seidel (Graphics) \nhttps://github.com/speedydaniel \n\nhttp://forum.xda-developers.com/member.php?u=4307243</string>
+    <string name="back_button_title">Back</string>
+    
 
 </resources>

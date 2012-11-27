@@ -6,33 +6,27 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
-	
-	Button buttonNext;
+public class SendActivity extends Activity {
 
+	Button buttonSend;
+	Button buttonFinish;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_send);
+
+		buttonSend = (Button) findViewById(R.id.buttonSend);
+		buttonFinish = (Button) findViewById(R.id.buttonFinish);
 		
-		buttonNext = (Button) findViewById(R.id.button_next);
-		
-		buttonNext.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				displaySendActivity();				
-			}
-		});
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.activity_send, menu);
 		return true;
 	}
 
@@ -48,10 +42,18 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//Call other Activities
-	private void displaySendActivity(){
-		final Intent intent = new Intent(this, SendActivity.class);
-		startActivity(intent);
+	/** Button Methods */
+	
+	/** Called when the user clicks the Send button */
+	public void buttonSendMethod(View v){
+		//Todo: do the sendings
+		buttonSend.setVisibility(View.GONE);
+		buttonFinish.setVisibility(View.VISIBLE);
+	}
+	
+	/** Called when the user clicks the Finish button */
+	public void buttonFinishMethod(View v){
+		finish();
 	}
 	
 
