@@ -46,17 +46,17 @@ public final class R {
         /**  General 
          */
         public static final int app_name=0x7f040000;
-        public static final int back_button_title=0x7f040012;
+        public static final int back_button_title=0x7f040018;
         public static final int checkbox_title=0x7f040006;
         /**  Main 
          */
         public static final int contact_list=0x7f040003;
         public static final int content_counter=0x7f04000e;
         public static final int content_edit_message=0x7f04000a;
-        public static final int content_help=0x7f040014;
+        public static final int content_help=0x7f04001a;
         public static final int content_log_window=0x7f04000d;
-        public static final int credits_code=0x7f040010;
-        public static final int credits_graphics=0x7f040011;
+        public static final int credits_code=0x7f040016;
+        public static final int credits_graphics=0x7f040017;
         public static final int filter_text=0x7f040007;
         public static final int finish_button_title=0x7f04000c;
         /**  Menu 
@@ -65,14 +65,20 @@ public final class R {
         public static final int menu_help=0x7f040002;
         public static final int name_filter_text=0x7f040008;
         public static final int next_button_title=0x7f040004;
+        public static final int no_message_entered=0x7f04000f;
         public static final int reload_button_title=0x7f040005;
         public static final int send_button_title=0x7f04000b;
+        public static final int sms_delivered=0x7f040013;
+        public static final int sms_failed_delivery=0x7f040014;
+        public static final int sms_generic_failure=0x7f040011;
+        public static final int sms_no_service=0x7f040012;
+        public static final int sms_sent=0x7f040010;
         /**  About 
          */
-        public static final int title_activity_about=0x7f04000f;
+        public static final int title_activity_about=0x7f040015;
         /**  Help 
          */
-        public static final int title_activity_help=0x7f040013;
+        public static final int title_activity_help=0x7f040019;
         /**  Send 
          */
         public static final int title_activity_send=0x7f040009;

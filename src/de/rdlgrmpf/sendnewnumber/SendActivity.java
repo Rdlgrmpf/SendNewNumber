@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SendActivity extends Activity {
 	
@@ -67,6 +72,8 @@ public class SendActivity extends Activity {
 		buttonSend = (Button) findViewById(R.id.buttonSend);
 		buttonFinish = (Button) findViewById(R.id.buttonFinish);
 		
+		mSmsManager = SmsManager.getDefault();
+		
 	}
 
 	@Override
@@ -93,16 +100,76 @@ public class SendActivity extends Activity {
 	
 	/** Called when the user clicks the Send button */
 	public void buttonSendMethod(View v){
-		mSmsManager = SmsManager.getDefault();
-		for(String number : mNumbers){
-			//mSmsManager.sendTextMessage(number, null, message.getText().toString(), null, null);
-			log.append("\nsent to: " + number);
-			Log.i(TAG, "\nsent to: " + number);
+		String smsMessage = message.getText().toString();
+		if(smsMessage.length() > 0){
+			for(String number : mNumbers){
+				sendSms(number, smsMessage);
+				try {
+					this.wait(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				log.append("\nsent to: " + number);
+				Log.i(TAG, "\nsent to: " + number);			
+			}
+			buttonSend.setVisibility(View.INVISIBLE);
+			buttonFinish.setVisibility(View.VISIBLE);
+			
+		} else {
+			Toast.makeText(getBaseContext(), getString(R.string.no_message_entered), Toast.LENGTH_SHORT).show();
 		}
 		
-		buttonSend.setVisibility(View.INVISIBLE);
-		buttonFinish.setVisibility(View.VISIBLE);
 		
+		
+	}
+	
+	protected void sendSms(String number, String message){
+		final String SENT = "sms_sent";
+		final String DELIVERED = "sms_delivered";
+		
+		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+		
+		registerReceiver(new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch(getResultCode()){
+				case Activity.RESULT_OK:
+					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+					Toast.makeText(context, getString(R.string.sms_generic_failure), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_NO_SERVICE:
+					Toast.makeText(context, getString(R.string.sms_no_service), Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+		}, new IntentFilter(SENT));
+		
+		registerReceiver(new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch(getResultCode()){
+				case Activity.RESULT_OK:
+					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case Activity.RESULT_CANCELED:
+					Toast.makeText(context, getString(R.string.sms_failed_delivery), Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+		}, new IntentFilter(DELIVERED));
+		
+		mSmsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
 	}
 	
 	/** Called when the user clicks the Finish button */
@@ -110,6 +177,7 @@ public class SendActivity extends Activity {
 		finish();
 	}
 	
+		
 	
 	
 }

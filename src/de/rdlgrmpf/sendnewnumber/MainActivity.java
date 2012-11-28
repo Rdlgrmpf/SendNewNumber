@@ -118,7 +118,7 @@ public class MainActivity extends Activity {
 			if (phoneNumber != null) {
 				if(checkNumber(phoneNumber, numberType) && checkName(name)){
 					mNumbers.add(phoneNumber);
-					s = s + name + "  " + phoneNumber + " "+ numberType +",\n";
+					s = s + name + "  " + phoneNumber + ",\n";
 				}
 			}
 

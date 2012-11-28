@@ -23,6 +23,13 @@
     <string name="finish_button_title">Done</string>
     <string name="content_log_window">Log:</string>
     <string name="content_counter">0</string>
+    <string name="no_message_entered">No message entered</string>
+    <string name="sms_sent">SMS sent</string>
+    <string name="sms_generic_failure">Generic failure</string>
+    <string name="sms_no_service">No service</string>
+    
+    <string name="sms_delivered">SMS delivered</string>
+    <string name="sms_failed_delivery">SMS not delivered</string>
     
     <!-- About -->
     <string name="title_activity_about">About</string>
