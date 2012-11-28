@@ -30,7 +30,13 @@
         </activity>
         <activity
             android:name="de.rdlgrmpf.sendnewnumber.SendActivity"
-            android:label="@string/title_activity_send" >
+            android:label="@string/title_activity_send"
+            android:excludeFromRecents="true"
+            android:windowSoftInputMode="stateUnchanged" >
+        </activity>
+        <activity
+            android:name="de.rdlgrmpf.sendnewnumber.HelpActivity"
+            android:label="@string/title_activity_help" >
         </activity>
     </application>
 

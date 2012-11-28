@@ -75,6 +75,7 @@ public class SendActivity extends Activity {
 		
 		buttonSend.setVisibility(View.INVISIBLE);
 		buttonFinish.setVisibility(View.VISIBLE);
+		
 	}
 	
 	/** Called when the user clicks the Finish button */

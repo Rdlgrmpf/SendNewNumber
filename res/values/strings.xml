@@ -6,6 +6,7 @@
 
     <!-- Menu -->
     <string name="menu_about">About</string>
+    <string name="menu_help">Help</string>
 
     <!-- Main -->
     <string name="contact_list">Empty List</string>
@@ -27,5 +28,10 @@
     <string name="credits_graphics">Daniel Seidel (Graphics) \nhttps://github.com/speedydaniel \n\nhttp://forum.xda-developers.com/member.php?u=4307243</string>
     <string name="back_button_title">Back</string>
     
+    <!-- Help -->
+    <string name="title_activity_help">Help</string>
+    <string name="content_help">Basic Instruction:\n\n1.Select the numbers by (un)checking \"Only mobile\" and/or applying filters\n2. Filters are separated by a space
+        \n3. If you change anything, hit \"Reload\"\n4. ???\n5. Profit! (Hit \"Next\")\n\nExample of a valid filter:\n+49 0049 0038\nLocal numbers(neither beginning with
+        + nor 00 are ALWAYS included)\n\nMore: https://github.com/Rdlgrmpf/SendNewNumber/wiki/Help</string>
 
 </resources>

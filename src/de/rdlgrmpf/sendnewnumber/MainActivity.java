@@ -8,7 +8,6 @@ import android.provider.ContactsContract;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,6 +70,10 @@ public class MainActivity extends Activity {
 		case R.id.menu_about:
 			final Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
+			
+		case R.id.menu_help:
+			final Intent intent2 = new Intent(this, HelpActivity.class);
+			startActivity(intent2);
 
 		default:
 		}
