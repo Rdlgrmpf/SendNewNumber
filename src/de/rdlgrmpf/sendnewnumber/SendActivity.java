@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class SendActivity extends Activity {
+	
+	private static final String TAG ="SendNewNumber";
 
 	Button buttonSend;
 	Button buttonFinish;
@@ -67,9 +70,10 @@ public class SendActivity extends Activity {
 		for(String number : mNumbers){
 			//mSmsManager.sendTextMessage(number, null, message.getText().toString(), null, null);
 			log.append("\nsent to: " + number);
+			Log.i(TAG, "\nsent to: " + number);
 		}
 		
-		buttonSend.setVisibility(View.GONE);
+		buttonSend.setVisibility(View.INVISIBLE);
 		buttonFinish.setVisibility(View.VISIBLE);
 	}
 	

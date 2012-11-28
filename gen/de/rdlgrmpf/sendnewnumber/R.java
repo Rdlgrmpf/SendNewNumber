@@ -14,8 +14,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int buttonFinish=0x7f07000a;
-        public static final int buttonSend=0x7f070009;
+        public static final int buttonFinish=0x7f07000b;
+        public static final int buttonSend=0x7f07000a;
         public static final int button_back=0x7f070002;
         public static final int button_next=0x7f070006;
         public static final int button_reload=0x7f070005;
@@ -25,7 +25,7 @@ public final class R {
         public static final int textView1=0x7f070000;
         public static final int textView2=0x7f070001;
         public static final int textViewFilter=0x7f070007;
-        public static final int textViewLog=0x7f07000b;
+        public static final int textViewLog=0x7f070009;
         public static final int textViewMessage=0x7f070008;
     }
     public static final class layout {

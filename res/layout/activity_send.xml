@@ -20,27 +20,6 @@
         android:text="@string/content_edit_message"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/buttonSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:text="@string/send_button_title"
-        android:onClick="buttonSendMethod" />
-    
-    <Button
-        android:id="@+id/buttonFinish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:text="@string/finish_button_title"
-        android:onClick="buttonFinishMethod"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/textViewLog"
         android:layout_width="wrap_content"
@@ -55,5 +34,24 @@
         android:scrollbars="vertical"
         android:text="@string/content_log_window"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/buttonFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="buttonFinishMethod"
+        android:text="@string/finish_button_title"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="buttonSendMethod"
+        android:text="@string/send_button_title" />
 
 </RelativeLayout>
