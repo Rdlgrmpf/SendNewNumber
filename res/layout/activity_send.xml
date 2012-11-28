@@ -35,11 +35,10 @@
         android:id="@+id/textViewLog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonSend"
-        android:layout_below="@+id/textViewCounter"
+        android:layout_above="@+id/checkBox_database"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/textViewCounter"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:scrollbars="vertical"
@@ -78,5 +77,13 @@
         android:text="@string/sent_count"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <CheckBox
+        android:id="@+id/checkBox_database"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSend"
+        android:layout_alignParentLeft="true"
+        android:text="@string/check_box_database_title" />
 
 </RelativeLayout>

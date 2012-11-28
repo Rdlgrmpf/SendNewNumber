@@ -2,10 +2,12 @@ package de.rdlgrmpf.sendnewnumber;
 
 import java.util.ArrayList;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +30,15 @@ public class SendActivity extends Activity {
 
 	Button buttonSend;
 	Button buttonFinish;
+	CheckBox checkBoxDatabase;
 	TextView log;
 	EditText message;
 	TextView mCounter;
 	TextView sentCounter;
 	ArrayList<String> mNumbers;
 	SmsManager mSmsManager;
+	BroadcastReceiver sentReceiver;
+	BroadcastReceiver deliveredReceiver;
 	
 	private int totalSMS = 0;
 	private int sentSMS = 0;
@@ -79,8 +85,58 @@ public class SendActivity extends Activity {
 		
 		buttonSend = (Button) findViewById(R.id.buttonSend);
 		buttonFinish = (Button) findViewById(R.id.buttonFinish);
+		checkBoxDatabase = (CheckBox) findViewById(R.id.checkBox_database);
 		
 		mSmsManager = SmsManager.getDefault();
+		
+		sentReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch(getResultCode()){
+				case Activity.RESULT_OK:
+					sentSMS++;
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
+					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+					Toast.makeText(context, getString(R.string.sms_generic_failure), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_NO_SERVICE:
+					Toast.makeText(context, getString(R.string.sms_no_service), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_NULL_PDU:
+					Toast.makeText(context, getString(R.string.sms_null_pdu), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case SmsManager.RESULT_ERROR_RADIO_OFF:
+					Toast.makeText(context, getString(R.string.sms_radio_off), Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+		};
+		deliveredReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch(getResultCode()){
+				case Activity.RESULT_OK:
+					deliveredSMS++;
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
+					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case Activity.RESULT_CANCELED:
+					Toast.makeText(context, getString(R.string.sms_failed_delivery), Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+		};
 		
 	}
 
@@ -134,53 +190,29 @@ public class SendActivity extends Activity {
 		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
 		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
 		
-		registerReceiver(new BroadcastReceiver() {
-			
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				switch(getResultCode()){
-				case Activity.RESULT_OK:
-					sentSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
-					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
-					break;
-					
-				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-					Toast.makeText(context, getString(R.string.sms_generic_failure), Toast.LENGTH_SHORT).show();
-					break;
-					
-				case SmsManager.RESULT_ERROR_NO_SERVICE:
-					Toast.makeText(context, getString(R.string.sms_no_service), Toast.LENGTH_SHORT).show();
-					break;
-				}
-				
-			}
-		}, new IntentFilter(SENT));
+		registerReceiver(sentReceiver, new IntentFilter(SENT));
 		
-		registerReceiver(new BroadcastReceiver() {
-			
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				switch(getResultCode()){
-				case Activity.RESULT_OK:
-					deliveredSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
-					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
-					break;
-					
-				case Activity.RESULT_CANCELED:
-					Toast.makeText(context, getString(R.string.sms_failed_delivery), Toast.LENGTH_SHORT).show();
-					break;
-				}
-				
-			}
-		}, new IntentFilter(DELIVERED));
+		registerReceiver(deliveredReceiver, new IntentFilter(DELIVERED));
 		
 		mSmsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
 	}
 	
 	/** Called when the user clicks the Finish button */
 	public void buttonFinishMethod(View v){
+		if((sentSMS == totalSMS) && checkBoxDatabase.isChecked()){
+			
+			for (String n : mNumbers){
+				ContentValues values = new ContentValues();
+				values.put("address", n);
+				values.put("body", message.getText().toString());
+				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+			}
+			
+			Toast.makeText(getBaseContext(), getString(R.string.sms_added_to_database), Toast.LENGTH_SHORT).show();
+		}
+		
+		unregisterReceiver(sentReceiver);
+		unregisterReceiver(deliveredReceiver);
 		finish();
 	}
 	
