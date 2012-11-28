@@ -10,12 +10,16 @@
     <!-- Main -->
     <string name="contact_list">Empty List</string>
     <string name="next_button_title">Next</string>
+    <string name="reload_button_title">Reload</string>
+    <string name="checkbox_title">Only mobile</string>
+    <string name="filter_text">Only numbers that start with</string>
 
     <!-- Send -->
     <string name="title_activity_send">Send</string>
     <string name="content_edit_message">Hello, \nmy new number is +49 12345678 \nname</string>
     <string name="send_button_title">Send</string>
     <string name="finish_button_title">Done</string>
+    <string name="content_log_window">Log</string>
     
     <!-- About -->
     <string name="title_activity_about">About</string>

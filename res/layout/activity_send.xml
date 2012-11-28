@@ -41,4 +41,19 @@
         android:onClick="buttonFinishMethod"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/textViewLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSend"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewMessage"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:scrollbars="vertical"
+        android:text="@string/content_log_window"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>
