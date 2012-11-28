@@ -54,7 +54,7 @@
         android:layout_alignParentRight="true"
         android:onClick="buttonFinishMethod"
         android:text="@string/finish_button_title"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonSend"
@@ -65,6 +65,18 @@
         android:onClick="buttonSendMethod"
         android:text="@string/send_button_title" />
 
-    
+    <TextView
+        android:id="@+id/textViewSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonSend"
+        android:layout_alignTop="@+id/buttonSend"
+        android:layout_toLeftOf="@+id/buttonFinish"
+        android:layout_toRightOf="@+id/buttonSend"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:text="@string/sent_count"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

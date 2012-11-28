@@ -30,8 +30,13 @@ public class SendActivity extends Activity {
 	TextView log;
 	EditText message;
 	TextView mCounter;
+	TextView sentCounter;
 	ArrayList<String> mNumbers;
 	SmsManager mSmsManager;
+	
+	private int totalSMS = 0;
+	private int sentSMS = 0;
+	private int deliveredSMS =0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class SendActivity extends Activity {
 		
 		if (getIntent().getExtras() != null){
 			mNumbers = getIntent().getExtras().getStringArrayList(MainActivity.NUMBER_LIST);
+			totalSMS = mNumbers.size();
 		} else 
 			mNumbers = null;
 		
@@ -47,6 +53,8 @@ public class SendActivity extends Activity {
 		message = (EditText) findViewById(R.id.textViewMessage);
 		mCounter = (TextView) findViewById(R.id.textViewCounter);
 		mCounter.setText("" + message.getText().length());
+		sentCounter = (TextView) findViewById(R.id.textViewSent);
+		sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
 		message.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -101,17 +109,12 @@ public class SendActivity extends Activity {
 	/** Called when the user clicks the Send button */
 	public void buttonSendMethod(View v){
 		String smsMessage = message.getText().toString();
+		
 		if(smsMessage.length() > 0){
-			for(String number : mNumbers){
+			for(String number : mNumbers){		
 				sendSms(number, smsMessage);
-				try {
-					this.wait(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				log.append("\nsent to: " + number);
-				Log.i(TAG, "\nsent to: " + number);			
+			    log.append("\nsent to: " + number);
+				Log.i(TAG, "\nsent to: " + number);
 			}
 			buttonSend.setVisibility(View.INVISIBLE);
 			buttonFinish.setVisibility(View.VISIBLE);
@@ -137,6 +140,8 @@ public class SendActivity extends Activity {
 			public void onReceive(Context context, Intent intent) {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
+					sentSMS++;
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
 					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -158,6 +163,8 @@ public class SendActivity extends Activity {
 			public void onReceive(Context context, Intent intent) {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
+					deliveredSMS++;
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
 					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
 					break;
 					
