@@ -34,19 +34,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/next_button_title" />
-
-    <EditText
-        android:id="@+id/textViewFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_reload"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:inputType="phone"
-        android:hint="@string/filter_text" />
-
+    
     <CheckBox
         android:id="@+id/checkBox_only_mobile"
         android:layout_width="match_parent"
@@ -56,5 +44,31 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/checkbox_title" />
+
+    <EditText
+        android:id="@+id/textViewFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewNameFilter"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="phone"
+        android:hint="@string/filter_text" />
+    
+    <EditText
+        android:id="@+id/textViewNameFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_reload"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="text"
+        android:hint="@string/name_filter_text" />
+
+    
 
 </RelativeLayout>

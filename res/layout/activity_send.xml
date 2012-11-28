@@ -18,6 +18,17 @@
         android:inputType="textAutoCorrect|textMultiLine"
         android:singleLine="false"
         android:text="@string/content_edit_message"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:maxLength="160" />
+    
+    <TextView
+        android:id="@+id/textViewCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewMessage"
+        android:layout_alignLeft="@+id/textViewMessage"
+        android:layout_alignRight="@+id/textViewMessage"
+        android:text="@string/content_counter"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -25,9 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonSend"
+        android:layout_below="@+id/textViewCounter"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewMessage"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -53,5 +64,7 @@
         android:layout_alignParentLeft="true"
         android:onClick="buttonSendMethod"
         android:text="@string/send_button_title" />
+
+    
 
 </RelativeLayout>

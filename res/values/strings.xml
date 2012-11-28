@@ -14,13 +14,15 @@
     <string name="reload_button_title">Reload</string>
     <string name="checkbox_title">Only mobile</string>
     <string name="filter_text">Only numbers that start with</string>
+    <string name="name_filter_text">Only names that contain</string>
 
     <!-- Send -->
     <string name="title_activity_send">Send</string>
     <string name="content_edit_message">Hello, \nmy new number is +49 12345678 \nname</string>
     <string name="send_button_title">Send</string>
     <string name="finish_button_title">Done</string>
-    <string name="content_log_window">Log</string>
+    <string name="content_log_window">Log:</string>
+    <string name="content_counter">0</string>
     
     <!-- About -->
     <string name="title_activity_about">About</string>
@@ -31,7 +33,7 @@
     <!-- Help -->
     <string name="title_activity_help">Help</string>
     <string name="content_help">Basic Instruction:\n\n1.Select the numbers by (un)checking \"Only mobile\" and/or applying filters\n2. Filters are separated by a space
-        \n3. If you change anything, hit \"Reload\"\n4. ???\n5. Profit! (Hit \"Next\")\n\nExample of a valid filter:\n+49 0049 0038\nLocal numbers(neither beginning with
-        + nor 00 are ALWAYS included)\n\nMore: https://github.com/Rdlgrmpf/SendNewNumber/wiki/Help</string>
+        \n3. If you change anything, hit \"Reload\"\n4. ???\n5. Profit! (Hit \"Next\")\n\nExample of a valid number filter:\n+49 0049 0038\nLocal numbers(neither beginning with
+        + nor 00 are ALWAYS included)\n\nExample of a valid name filter:\nRobin mo han\n\nMore: https://github.com/Rdlgrmpf/SendNewNumber/wiki/Help</string>
 
 </resources>

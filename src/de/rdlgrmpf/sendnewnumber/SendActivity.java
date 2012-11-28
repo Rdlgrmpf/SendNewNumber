@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.telephony.SmsManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +18,13 @@ import android.widget.TextView;
 
 public class SendActivity extends Activity {
 	
-	private static final String TAG ="SendNewNumber";
+	private static final String TAG ="SendNewNumber/Send";
 
 	Button buttonSend;
 	Button buttonFinish;
 	TextView log;
 	EditText message;
+	TextView mCounter;
 	ArrayList<String> mNumbers;
 	SmsManager mSmsManager;
 	
@@ -37,6 +40,29 @@ public class SendActivity extends Activity {
 		
 		log = (TextView) findViewById(R.id.textViewLog);
 		message = (EditText) findViewById(R.id.textViewMessage);
+		mCounter = (TextView) findViewById(R.id.textViewCounter);
+		mCounter.setText("" + message.getText().length());
+		message.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				mCounter.setText("" + message.getText().length());
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		buttonSend = (Button) findViewById(R.id.buttonSend);
 		buttonFinish = (Button) findViewById(R.id.buttonFinish);
@@ -56,6 +82,7 @@ public class SendActivity extends Activity {
 		case R.id.menu_about:
 			final Intent intent = new Intent(this, AboutActivity.class);
     		startActivity(intent);
+    		break;
     	
     	default:
 		}

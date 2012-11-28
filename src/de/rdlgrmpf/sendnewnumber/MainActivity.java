@@ -1,6 +1,7 @@
 package de.rdlgrmpf.sendnewnumber;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.provider.ContactsContract;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +20,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+	private static final String TAG ="SendNewNumber/Main";
+	
 	public static final String NUMBER_LIST = "main_activity_number_list";
 
 	Button buttonNext;
 	Button buttonReload;
 	TextView contactsTextView;
 	EditText filterText;
+	EditText nameFilterText;
 	CheckBox checkBoxMobile;
 	ArrayList<String> mNumbers;
 
@@ -34,8 +39,9 @@ public class MainActivity extends Activity {
 
 		contactsTextView = (TextView) findViewById(R.id.contacts_text_view);
 		filterText = (EditText) findViewById(R.id.textViewFilter);
+		nameFilterText = (EditText) findViewById(R.id.textViewNameFilter);
  		checkBoxMobile = (CheckBox) findViewById(R.id.checkBox_only_mobile);
-		contactsTextView.setText(getList());
+		contactsTextView.setText(refreshList());
 
 		buttonNext = (Button) findViewById(R.id.button_next);
 		buttonNext.setOnClickListener(new OnClickListener() {
@@ -51,7 +57,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				contactsTextView.setText(getList());
+				contactsTextView.setText(refreshList());
 				
 			}
 		});
@@ -70,10 +76,12 @@ public class MainActivity extends Activity {
 		case R.id.menu_about:
 			final Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
+			break;
 			
 		case R.id.menu_help:
 			final Intent intent2 = new Intent(this, HelpActivity.class);
 			startActivity(intent2);
+			break;
 
 		default:
 		}
@@ -89,7 +97,7 @@ public class MainActivity extends Activity {
 
 	// End
 
-	private String getList() {
+	private String refreshList() {
 		String s = "";
 		mNumbers = new ArrayList<String>();
 		
@@ -108,7 +116,7 @@ public class MainActivity extends Activity {
 			int numberType = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 			
 			if (phoneNumber != null) {
-				if(checkNumber(phoneNumber, numberType)){
+				if(checkNumber(phoneNumber, numberType) && checkName(name)){
 					mNumbers.add(phoneNumber);
 					s = s + name + "  " + phoneNumber + " "+ numberType +",\n";
 				}
@@ -116,12 +124,13 @@ public class MainActivity extends Activity {
 
 		}
 		phones.close();
-
+		
+		Log.i(TAG, "" + mNumbers.toString());
 		return s;
 	}
 	private boolean checkNumber(String number, int type){
 		boolean mobileOnly = checkBoxMobile.isChecked();
-		String[] filterList = seperateFilter(filterText.getText().toString());
+		String[] filterList = separateFilter(filterText.getText().toString());
 		
 		if(mobileOnly && type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE){ // whether we want only mobile and number is mobile
 			if (filterList.length == 0){											//if no filters are applied every mobile number is ok
@@ -162,7 +171,21 @@ public class MainActivity extends Activity {
 		return false;																//if we want mobile numbers, but number is not mobile return false		
 	}
 	
-	private String[] seperateFilter(String filter){
+	private boolean checkName(String name){
+		String[] filterList = separateFilter(nameFilterText.getText().toString());
+		if (filterList.length == 0){					//no filter, allow every name
+			return true;
+		} else {
+			for (String f : filterList){				//check if we want the name
+				if(name.toLowerCase(Locale.getDefault()).contains(f.toLowerCase(Locale.getDefault()))){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private String[] separateFilter(String filter){
 		String[] filterList = filter.split(" ");
 		return filterList;
 		
