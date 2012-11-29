@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -12,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -101,7 +103,7 @@ public class SendActivity extends Activity {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
 					sentSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + " delivered");
 					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -131,7 +133,7 @@ public class SendActivity extends Activity {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
 					deliveredSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
+					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + " delivered");
 					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -200,18 +202,31 @@ public class SendActivity extends Activity {
 	/** Called when the user clicks the Finish button */
 	public void buttonFinishMethod(View v){
 		if((sentSMS == totalSMS) && checkBoxDatabase.isChecked()){
-			
-			for (String n : mNumbers){
-				ContentValues values = new ContentValues();
-				values.put("address", n);
-				values.put("body", message.getText().toString());
-				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-			}
-			
-			Toast.makeText(getBaseContext(), getString(R.string.sms_added_to_database), Toast.LENGTH_SHORT).show();
-		}
+			new databaseWriter().execute(null, null, null);
+		} else {
+			finish(); //databaseWriter handles it in the other case
+		}		
 		
-		finish();
+	}
+	
+	private String getContactNameFromNumber(String number) {
+		
+		Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+		// define the columns for the query to return
+		String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME,
+											ContactsContract.PhoneLookup.NUMBER};
+		// query time
+		Cursor c = getContentResolver().query(uri, projection, null, null, null);
+
+		// if the query returns 1 or more results
+		// return the first result
+		if (c.moveToFirst()) {
+			String name = c.getString(c.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+			return name;
+		}
+
+		// return the original number if no match was found
+		return number;
 	}
 	
 	protected void sendSms(String number, String message){
@@ -222,6 +237,7 @@ public class SendActivity extends Activity {
 		mSmsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
 	}
 	
+	/** Background Tasks */
 	private class smsSender extends AsyncTask<Void, Void, Void>{
 
 		@Override
@@ -243,5 +259,35 @@ public class SendActivity extends Activity {
 		
 	}
 	
-	
+	private class databaseWriter extends AsyncTask<Void, String, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			for (String n : mNumbers){
+				ContentValues values = new ContentValues();
+				values.put("address", n);
+				values.put("body", message.getText().toString());
+				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+				publishProgress("Message added to " + getContactNameFromNumber(n));
+				//Toast.makeText(getBaseContext(), "Message added to " + n, Toast.LENGTH_SHORT).show();
+			}
+			publishProgress(getString(R.string.sms_added_to_database));
+			//Toast.makeText(getBaseContext(), , Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			finish();
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected void onProgressUpdate(String...values) {
+			Toast.makeText(getBaseContext(), values[0], Toast.LENGTH_SHORT).show();
+			super.onProgressUpdate(values);
+		}
+		
+		
+	}
 }

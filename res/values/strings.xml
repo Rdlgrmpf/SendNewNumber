@@ -28,7 +28,7 @@
     <string name="no_message_entered">No message entered</string>
     <string name="no_time">Invalid sleep time entered</string>
     <string name="sms_sent">SMS sent</string>
-    <string name="sms_added_to_database">SMS added to database</string>
+    <string name="sms_added_to_database">All SMS added to database</string>
     <string name="sms_generic_failure">Generic failure</string>
     <string name="sms_no_service">No service</string>
     <string name="sms_null_pdu">Null PDU</string>
