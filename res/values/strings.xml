@@ -22,10 +22,11 @@
     <string name="send_button_title">Send</string>
     <string name="finish_button_title">Done</string>
     <string name="check_box_database_title">Add to Database</string>
-    <string name="content_log_window">Log:</string>
+    <string name="content_sleep_time">Set the delay between messages (ms)</string>
     <string name="content_counter">0</string>
     <string name="sent_count">0/0 sent\n0/0 delivered</string>
     <string name="no_message_entered">No message entered</string>
+    <string name="no_time">Invalid sleep time entered</string>
     <string name="sms_sent">SMS sent</string>
     <string name="sms_added_to_database">SMS added to database</string>
     <string name="sms_generic_failure">Generic failure</string>

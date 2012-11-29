@@ -3,6 +3,7 @@ package de.rdlgrmpf.sendnewnumber;
 import java.util.ArrayList;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -27,11 +28,14 @@ import android.widget.Toast;
 public class SendActivity extends Activity {
 	
 	private static final String TAG ="SendNewNumber/Send";
+	
+	final String SENT = "sms_sent";
+	final String DELIVERED = "sms_delivered";
 
 	Button buttonSend;
 	Button buttonFinish;
 	CheckBox checkBoxDatabase;
-	TextView log;
+	EditText textSleepTime;
 	EditText message;
 	TextView mCounter;
 	TextView sentCounter;
@@ -43,6 +47,7 @@ public class SendActivity extends Activity {
 	private int totalSMS = 0;
 	private int sentSMS = 0;
 	private int deliveredSMS =0;
+	private int sleepTime = 2000;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class SendActivity extends Activity {
 		} else 
 			mNumbers = null;
 		
-		log = (TextView) findViewById(R.id.textViewLog);
+		textSleepTime = (EditText) findViewById(R.id.textViewSleepTime);
 		message = (EditText) findViewById(R.id.textViewMessage);
 		mCounter = (TextView) findViewById(R.id.textViewCounter);
 		mCounter.setText("" + message.getText().length());
@@ -137,8 +142,18 @@ public class SendActivity extends Activity {
 				
 			}
 		};
-		
+		registerReceiver(sentReceiver, new IntentFilter(SENT));
+		registerReceiver(deliveredReceiver, new IntentFilter(DELIVERED));
 	}
+
+	@Override
+	protected void onStop() {
+		unregisterReceiver(sentReceiver);
+		unregisterReceiver(deliveredReceiver);
+		super.onStop();
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,36 +180,21 @@ public class SendActivity extends Activity {
 	/** Called when the user clicks the Send button */
 	public void buttonSendMethod(View v){
 		String smsMessage = message.getText().toString();
+		String tempTime = textSleepTime.getText().toString();
 		
-		if(smsMessage.length() > 0){
-			for(String number : mNumbers){		
-				sendSms(number, smsMessage);
-			    log.append("\nsent to: " + number);
-				Log.i(TAG, "\nsent to: " + number);
-			}
+		if((smsMessage.length() > 0) && (tempTime.length() > 0)){
+			sleepTime = Integer.parseInt(textSleepTime.getText().toString());
+			new smsSender().execute(null, null, null); //start sending
 			buttonSend.setVisibility(View.INVISIBLE);
 			buttonFinish.setVisibility(View.VISIBLE);
 			
-		} else {
+		} else if(!(tempTime.length() < 1)) {
 			Toast.makeText(getBaseContext(), getString(R.string.no_message_entered), Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getBaseContext(), getString(R.string.no_time), Toast.LENGTH_SHORT).show();
+			sleepTime = 2000;
 		}
 		
-		
-		
-	}
-	
-	protected void sendSms(String number, String message){
-		final String SENT = "sms_sent";
-		final String DELIVERED = "sms_delivered";
-		
-		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
-		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
-		
-		registerReceiver(sentReceiver, new IntentFilter(SENT));
-		
-		registerReceiver(deliveredReceiver, new IntentFilter(DELIVERED));
-		
-		mSmsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
 	}
 	
 	/** Called when the user clicks the Finish button */
@@ -211,12 +211,37 @@ public class SendActivity extends Activity {
 			Toast.makeText(getBaseContext(), getString(R.string.sms_added_to_database), Toast.LENGTH_SHORT).show();
 		}
 		
-		unregisterReceiver(sentReceiver);
-		unregisterReceiver(deliveredReceiver);
 		finish();
 	}
 	
+	protected void sendSms(String number, String message){
 		
+		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+		
+		mSmsManager.sendTextMessage(number, null, message, sentPI, deliveredPI);
+	}
+	
+	private class smsSender extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			String smsMessage = message.getText().toString();
+			for(String number : mNumbers){		
+				sendSms(number, smsMessage);
+				Log.i(TAG, "sent to: " + number);				
+				try {
+					Log.i(TAG, "wait for " + sleepTime + " ms");
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+		
+	}
 	
 	
 }

@@ -31,18 +31,17 @@
         android:text="@string/content_counter"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/textViewLog"
+    <EditText
+        android:id="@+id/textViewSleepTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/checkBox_database"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewCounter"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:scrollbars="vertical"
-        android:text="@string/content_log_window"
+        android:inputType="number"
+        android:hint="@string/content_sleep_time"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
@@ -82,8 +81,8 @@
         android:id="@+id/checkBox_database"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonSend"
-        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/buttonFinish"
+        android:layout_alignParentRight="true"
         android:text="@string/check_box_database_title" />
 
 </RelativeLayout>
