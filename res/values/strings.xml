@@ -24,16 +24,19 @@
     <string name="check_box_database_title">Add to Database</string>
     <string name="content_sleep_time">Set the delay between messages (ms)</string>
     <string name="content_counter">0</string>
-    <string name="sent_count">0/0 sent\n0/0 delivered</string>
+    <string name="sent_count">sent: 0/0\ndelivered: 0/0</string>
+    	<!-- Toasts -->
     <string name="no_message_entered">No message entered</string>
     <string name="no_time">Invalid sleep time entered</string>
+    <string name="counter_sent">sent:</string>
+    <string name="counter_delivered">delivered:</string>
+    <string name="sms_added_to_database">Message added to </string> <!-- space in the end is important! -->
+    <string name="all_sms_added_to_database">All SMS added to database</string>
     <string name="sms_sent">SMS sent</string>
-    <string name="sms_added_to_database">All SMS added to database</string>
     <string name="sms_generic_failure">Generic failure</string>
     <string name="sms_no_service">No service</string>
     <string name="sms_null_pdu">Null PDU</string>
     <string name="sms_radio_off">Radio is offline</string>
-    
     <string name="sms_delivered">SMS delivered</string>
     <string name="sms_failed_delivery">SMS not delivered</string>
     
@@ -41,6 +44,7 @@
     <string name="title_activity_about">About</string>
     <string name="credits_code">Robin Morawetz (Code) \nhttps://github.com/Rdlgrmpf" \n\nhttp://forum.xda-developers.com/member.php?u=3626662</string>
     <string name="credits_graphics">Daniel Seidel (Graphics) \nhttps://github.com/speedydaniel \n\nhttp://forum.xda-developers.com/member.php?u=4307243</string>
+    <string name="credits_translations">Translations:\nFrench: Pnoire\n</string>
     <string name="back_button_title">Back</string>
     
     <!-- Help -->

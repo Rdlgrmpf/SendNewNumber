@@ -67,7 +67,7 @@ public class SendActivity extends Activity {
 		mCounter = (TextView) findViewById(R.id.textViewCounter);
 		mCounter.setText("" + message.getText().length());
 		sentCounter = (TextView) findViewById(R.id.textViewSent);
-		sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + "delivered");
+		sentCounter.setText(getString(R.string.counter_sent) + sentSMS + "/" + totalSMS + "\n" + getString(R.string.counter_delivered) + deliveredSMS + "/" + totalSMS);
 		message.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -103,7 +103,7 @@ public class SendActivity extends Activity {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
 					sentSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + " delivered");
+					sentCounter.setText(getString(R.string.counter_sent) + sentSMS + "/" + totalSMS + "\n" + getString(R.string.counter_delivered) + deliveredSMS + "/" + totalSMS);
 					Toast.makeText(context, getString(R.string.sms_sent), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -133,7 +133,7 @@ public class SendActivity extends Activity {
 				switch(getResultCode()){
 				case Activity.RESULT_OK:
 					deliveredSMS++;
-					sentCounter.setText(sentSMS + "/" + totalSMS + " sent\n" + deliveredSMS + "/" + totalSMS + " delivered");
+					sentCounter.setText(getString(R.string.counter_sent) + sentSMS + "/" + totalSMS + "\n" + getString(R.string.counter_delivered) + deliveredSMS + "/" + totalSMS);
 					Toast.makeText(context, getString(R.string.sms_delivered), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -268,11 +268,9 @@ public class SendActivity extends Activity {
 				values.put("address", n);
 				values.put("body", message.getText().toString());
 				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-				publishProgress("Message added to " + getContactNameFromNumber(n));
-				//Toast.makeText(getBaseContext(), "Message added to " + n, Toast.LENGTH_SHORT).show();
+				publishProgress(getString(R.string.sms_added_to_database) + " " + getContactNameFromNumber(n));
 			}
-			publishProgress(getString(R.string.sms_added_to_database));
-			//Toast.makeText(getBaseContext(), , Toast.LENGTH_SHORT).show();
+			publishProgress(getString(R.string.all_sms_added_to_database));
 			return null;
 		}
 
