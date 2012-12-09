@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -245,9 +244,9 @@ public class SendActivity extends Activity {
 			String smsMessage = message.getText().toString();
 			for(String number : mNumbers){		
 				sendSms(number, smsMessage);
-				Log.i(TAG, "sent to: " + number);				
+				//Log.i(TAG, "sent to: " + number);				
 				try {
-					Log.i(TAG, "wait for " + sleepTime + " ms");
+					//Log.i(TAG, "wait for " + sleepTime + " ms");
 					Thread.sleep(sleepTime);
 				} catch (InterruptedException e) {
 					

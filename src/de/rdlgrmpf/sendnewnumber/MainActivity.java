@@ -9,15 +9,16 @@ import android.provider.ContactsContract;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class MainActivity extends Activity {
 	private static final String TAG ="SendNewNumber/Main";
@@ -26,22 +27,27 @@ public class MainActivity extends Activity {
 
 	Button buttonNext;
 	Button buttonReload;
-	TextView contactsTextView;
+	ListView contactsListView;
 	EditText filterText;
 	EditText nameFilterText;
 	CheckBox checkBoxMobile;
-	ArrayList<String> mNumbers;
+	ArrayList<String> mContacts;
+	ArrayAdapter<String> mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		contactsTextView = (TextView) findViewById(R.id.contacts_text_view);
+		contactsListView = (ListView) findViewById(R.id.contacts_text_view);
 		filterText = (EditText) findViewById(R.id.textViewFilter);
 		nameFilterText = (EditText) findViewById(R.id.textViewNameFilter);
  		checkBoxMobile = (CheckBox) findViewById(R.id.checkBox_only_mobile);
-		contactsTextView.setText(refreshList());
+		//contactsListView.setText(refreshList());
+ 		refreshList(true);
+ 		mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, mContacts);
+ 		contactsListView.setAdapter(mAdapter);
+ 		contactsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 		buttonNext = (Button) findViewById(R.id.button_next);
 		buttonNext.setOnClickListener(new OnClickListener() {
@@ -57,8 +63,8 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				contactsTextView.setText(refreshList());
-				
+				//contactsListView.setText(refreshList());
+				refreshList(false);
 			}
 		});
 	}
@@ -91,15 +97,15 @@ public class MainActivity extends Activity {
 	// Call other Activities
 	private void displaySendActivity() {
 		final Intent intent = new Intent(this, SendActivity.class);
-		intent.putStringArrayListExtra(NUMBER_LIST, mNumbers);
+		intent.putStringArrayListExtra(NUMBER_LIST, getCheckedItems());
 		startActivity(intent);
 	}
 
 	// End
 
-	private String refreshList() {
-		String s = "";
-		mNumbers = new ArrayList<String>();
+	private void refreshList(boolean firstTime) {
+
+		mContacts = new ArrayList<String>();
 		
 		
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
@@ -117,17 +123,21 @@ public class MainActivity extends Activity {
 			
 			if (phoneNumber != null) {
 				if(checkNumber(phoneNumber, numberType) && checkName(name)){
-					mNumbers.add(phoneNumber);
-					s = s + name + "  " + phoneNumber + ",\n";
+					mContacts.add(name + ";\n " + phoneNumber);
 				}
 			}
 
 		}
 		phones.close();
 		
-		Log.i(TAG, "" + mNumbers.toString());
-		return s;
+		if(!firstTime) {
+			mAdapter.clear();
+			mAdapter.addAll(mContacts);
+			mAdapter.notifyDataSetChanged();
+			contactsListView.clearChoices();
+		}
 	}
+	
 	private boolean checkNumber(String number, int type){
 		boolean mobileOnly = checkBoxMobile.isChecked();
 		String[] filterList = separateFilter(filterText.getText().toString());
@@ -185,11 +195,28 @@ public class MainActivity extends Activity {
 		return false;
 	}
 	
+	private ArrayList<String> getCheckedItems(){
+		
+		ArrayList<String> mTemp = new ArrayList<String>(); // holds the numbers
+		SparseBooleanArray checked = contactsListView.getCheckedItemPositions();
+		for(int i = 0; i < checked.size(); i++ ){
+			if(checked.valueAt(i)){
+				mTemp.add(formatToNumber(contactsListView.getAdapter().getItem(checked.keyAt(i)).toString()));
+			}
+		}
+		return mTemp;
+	}
+	
+	
 	private String[] separateFilter(String filter){
 		String[] filterList = filter.split(" ");
-		return filterList;
-		
-		
+		return filterList;		
+	}
+	
+	private String formatToNumber(String s){
+		String[] temp = s.split(";\n");
+		s = temp[1];
+		return s;
 	}
 
 }
