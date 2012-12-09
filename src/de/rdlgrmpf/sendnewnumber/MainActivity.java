@@ -215,7 +215,7 @@ public class MainActivity extends Activity {
 	
 	private String formatToNumber(String s){
 		String[] temp = s.split(";\n");
-		s = temp[1];
+		s = temp[1].trim();
 		return s;
 	}
 
